@@ -1,3 +1,11 @@
+from .constants import (
+    ENTER_DEPOSIT_AMOUNT, ERR_DEPOSIT_MIN, ERR_DEPOSIT_AMOUNT,
+    ENTER_CARD_NUMBER, ERR_DIGITS, ERR_CARD_LENGTH, ERR_INVALID_CARD,
+    ENTER_PIN_NUMBER, ERR_PIN_LENGTH,
+    ENTER_WITHDRAW_AMOUNT, ERR_WITHDRAW_MIN, ERR_WITHDRAW_MAX, ERR_WITHDRAW_AMOUNT,
+    ERR_NOT_A_NUMBER
+)
+
 def get_deposit_amount():
     """
     Prompts the user for a deposit amount and validates it.
@@ -11,17 +19,17 @@ def get_deposit_amount():
         float: The validated deposit amount.
     """
     while True:
-        value = input("Enter deposit amount (minimum Rs. 100, multiples of 100): ")
+        value = input(ENTER_DEPOSIT_AMOUNT)
         try:
             amount = float(value)
         except ValueError:
-            print("Please enter a valid number.")
+            print(ERR_NOT_A_NUMBER)
             continue
         if amount < 100:
-            print("Minimum deposit amount is Rs. 100.")
+            print(ERR_DEPOSIT_MIN)
             continue
         if int(amount) % 100 != 0:
-            print("Deposit amount must be in multiples of 100.")
+            print(ERR_DEPOSIT_AMOUNT)
             continue
         return amount
 
@@ -42,15 +50,15 @@ def get_card_number(users):
         str: The validated card number.
     """
     while True:
-        card_number = input("Enter your card number: ")
+        card_number = input(ENTER_CARD_NUMBER)
         if not card_number.isdigit():
-            print("Card number must contain only digits.")
+            print(f"Card number {ERR_DIGITS}")
             continue
         if len(card_number) != 16:
-            print("Card number must be exactly 16 digits.")
+            print(ERR_CARD_LENGTH)
             continue
         if card_number not in users:
-            print("Invalid card number. No account found.")
+            print(ERR_INVALID_CARD)
             continue
         return card_number
 
@@ -67,12 +75,12 @@ def get_pin():
         str: The validated PIN.
     """
     while True:
-        pin = input("Enter your PIN: ")
+        pin = input(ENTER_PIN_NUMBER)
         if not pin.isdigit():
-            print("PIN must contain only digits.")
+            print(f"PIN {ERR_DIGITS}")
             continue
         if len(pin) != 4:
-            print("PIN must be exactly 4 digits.")
+            print(ERR_PIN_LENGTH)
             continue
         return pin
 
@@ -91,19 +99,19 @@ def get_withdraw_amount():
         float: The validated withdrawal amount.
     """
     while True:
-        value = input("Enter withdrawal amount (Rs. 100 - Rs. 10,000, multiples of 100): ")
+        value = input(ENTER_WITHDRAW_AMOUNT)
         try:
             amount = float(value)
         except ValueError:
-            print("Please enter a valid number.")
+            print(ERR_NOT_A_NUMBER)
             continue
         if amount < 100:
-            print("Minimum withdrawal amount is Rs. 100.")
+            print(ERR_WITHDRAW_MIN)
             continue
         if amount > 10000:
-            print("Maximum withdrawal amount per transaction is Rs. 10,000.")
+            print(ERR_WITHDRAW_MAX)
             continue
         if int(amount) % 100 != 0:
-            print("Withdrawal amount must be in multiples of 100.")
+            print(ERR_WITHDRAW_AMOUNT)
             continue
         return amount

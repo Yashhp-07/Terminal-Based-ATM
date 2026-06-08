@@ -1,4 +1,11 @@
 from .validations import get_deposit_amount, get_card_number, get_pin, get_withdraw_amount
+from .constants import (
+    ERR_CROSS_BANK_DEPOSIT, SUCCESS_DEPOSIT,
+    BALANCE_HEADER, BALANCE_LABEL_NAME, BALANCE_LABEL_CARD, BALANCE_LABEL_BANK,
+    BALANCE_LABEL_AMOUNT, BALANCE_SEPARATOR,
+    ERR_INSUFFICIENT_ATM_FUNDS, ERR_INSUFFICIENT_USER_FUNDS, ERR_DAILY_LIMIT,
+    ERR_CROSS_BANK_FEE, SUCCESS_WITHDRAWAL, MSG_CROSS_BANK_FEE, MSG_REMAINING_BALANCE
+)
 
 
 class ATM:
@@ -43,13 +50,13 @@ class ATM:
             current_user (User): The user making the deposit.
         """
         if self.bank_name != current_user.bank_name:
-            print("Cross-bank deposits are not allowed.")
+            print(ERR_CROSS_BANK_DEPOSIT)
             return
 
         amount = get_deposit_amount()
         current_user.balance += amount
         self.balance += amount
-        print(f"Successfully deposited Rs.{amount:.2f}. New balance: Rs.{current_user.balance:.2f}")
+        print(SUCCESS_DEPOSIT.format(amount, current_user.balance))
 
     def check_balance(self, current_user):
         """
@@ -58,12 +65,12 @@ class ATM:
         Args:
             current_user (User): The authenticated user whose balance is being checked.
         """
-        print("\n--- Account Balance ---")
-        print(f"Account Holder: {current_user.name}")
-        print(f"Card Number: {current_user.card_number}")
-        print(f"Bank: {current_user.bank_name}")
-        print(f"Current Balance: Rs.{current_user.balance:.2f}")
-        print("-" * 25)
+        print(BALANCE_HEADER)
+        print(BALANCE_LABEL_NAME.format(current_user.name))
+        print(BALANCE_LABEL_CARD.format(current_user.card_number))
+        print(BALANCE_LABEL_BANK.format(current_user.bank_name))
+        print(BALANCE_LABEL_AMOUNT.format(current_user.balance))
+        print(BALANCE_SEPARATOR)
 
     def withdraw(self, user):
         """
@@ -84,15 +91,15 @@ class ATM:
         amount = get_withdraw_amount()
 
         if self.balance < amount:
-            print("Insufficient funds in the ATM. Please try a smaller amount.")
+            print(ERR_INSUFFICIENT_ATM_FUNDS)
             return
 
         if user.balance < amount:
-            print("Insufficient balance in your account.")
+            print(ERR_INSUFFICIENT_USER_FUNDS)
             return
 
         if user.daily_withdrawal_count >= 10:
-            print("Daily withdrawal limit reached. Maximum 10 withdrawals per day.")
+            print(ERR_DAILY_LIMIT)
             return
 
         fee = 0
@@ -100,7 +107,7 @@ class ATM:
             fee = amount * 0.05
             total_deduction = amount + fee
             if user.balance < total_deduction:
-                print("Insufficient balance to cover withdrawal amount plus cross-bank fee.")
+                print(ERR_CROSS_BANK_FEE)
                 return
             user.balance -= total_deduction
             self.bank.balance += fee
@@ -111,7 +118,7 @@ class ATM:
         user.daily_withdrawal_amount += amount
         user.daily_withdrawal_count += 1
 
-        print(f"Successfully withdrew Rs.{amount:.2f}.")
+        print(SUCCESS_WITHDRAWAL.format(amount))
         if fee > 0:
-            print(f"Cross-bank fee: Rs.{fee:.2f}")
-        print(f"Remaining balance: Rs.{user.balance:.2f}")
+            print(MSG_CROSS_BANK_FEE.format(fee))
+        print(MSG_REMAINING_BALANCE.format(user.balance))
