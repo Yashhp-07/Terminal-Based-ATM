@@ -1,4 +1,5 @@
 from .validations import get_old_pin, get_new_pin
+from .constants import SUCCESS_PIN_CHANGED
 
 class User:
     """
@@ -75,6 +76,6 @@ class User:
         old_pin = get_old_pin(self)
         new_pin = get_new_pin(self)
         self.atm_pin = new_pin
-        print("PIN changed successfully!")
+        print(SUCCESS_PIN_CHANGED)
 
 

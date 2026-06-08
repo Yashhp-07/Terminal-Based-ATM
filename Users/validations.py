@@ -18,11 +18,10 @@ def get_old_pin(user):
     """
 
     while True:
-        value = input("Enter your current PIN: ")
+        value = input(ENTER_CURRENT_PIN)
         if value == user.atm_pin:
             return value
-        print("Wrong PIN. Please try again.")
-
+        print(ERR_WRONG_PIN)
 
 def get_new_pin(user):
     """
@@ -41,19 +40,19 @@ def get_new_pin(user):
     """
      
     while True:
-        new_pin = input("Enter your new PIN (4 digits): ")
+        new_pin = input(ENTER_NEW_PIN)
         if not new_pin.isdigit() or len(new_pin) != 4:
-            print("PIN must be exactly 4 digits.")
+            print(ERR_PIN_FORMAT)
             continue
 
         # new PIN must be different from current pin
         if new_pin == user.atm_pin:
-            print("New PIN must be different from current PIN.")
+            print(ERR_PIN_SAME)
             continue
 
         # confirm again
-        confirm = input("Confirm your new PIN: ")
+        confirm = input(CONFIRM_NEW_PIN)
         if new_pin != confirm:
-            print("PINs do not match. Please try again.")
+            print(ERR_PIN_MISMATCH)
             continue
         return new_pin
