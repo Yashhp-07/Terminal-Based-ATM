@@ -1,3 +1,5 @@
+from .validations import get_old_pin, get_new_pin
+
 class User:
     def __init__(self, user_id, name, dob, phone_number, email, aadhar_number, pan_number, initial_balance, bank_name, card_number, atm_pin):
         self.user_id = user_id
@@ -21,25 +23,3 @@ class User:
         print("PIN changed successfully!")
 
 
-def get_old_pin(user):
-    while True:
-        entered = input("Enter your current PIN: ")
-        if entered == user.atm_pin:
-            return entered
-        print("Wrong PIN. Please try again.")
-
-
-def get_new_pin(user):
-    while True:
-        new_pin = input("Enter your new PIN (4 digits): ")
-        if not new_pin.isdigit() or len(new_pin) != 4:
-            print("PIN must be exactly 4 digits.")
-            continue
-        if new_pin == user.atm_pin:
-            print("New PIN must be different from current PIN.")
-            continue
-        confirm = input("Confirm your new PIN: ")
-        if new_pin != confirm:
-            print("PINs do not match. Please try again.")
-            continue
-        return new_pin
