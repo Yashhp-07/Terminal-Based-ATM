@@ -10,6 +10,7 @@ from .constants import (
     ENTER_PAN_NUMBER, ERR_PAN_FORMAT,
     ENTER_INITIAL_BALANCE, ERR_BALANCE_NOT_NUMBER, ERR_BALANCE_MIN,
     ENTER_ATM_INITIAL_BALANCE, ERR_ATM_BALANCE_MIN,
+    ENTER_AMOUNT_TO_ADD, ERR_ATM_TOPUP_MIN,
     ENTER_LOCATION, ERR_LOCATION_SHORT, ERR_LOCATION_LONG
 )
 
@@ -110,6 +111,10 @@ def validate_initial_balance():
 
 def validate_atm_initial_balance():
     return validate_amount(ENTER_ATM_INITIAL_BALANCE, 100000, ERR_ATM_BALANCE_MIN)
+
+
+def validate_atm_topup_balance():
+    return validate_amount(ENTER_AMOUNT_TO_ADD, 50000, ERR_ATM_TOPUP_MIN)
 
 
 def validate_location():
