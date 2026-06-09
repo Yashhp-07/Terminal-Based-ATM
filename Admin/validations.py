@@ -9,7 +9,9 @@ from .constants import (
     ENTER_BANK_NAME, ERR_BANK_NAME_EMPTY, ERR_BANK_NAME_LENGTH, ERR_BANK_NAME_EXISTS,
     ENTER_BANK_USERNAME, ERR_BANK_USERNAME_EMPTY, ERR_BANK_USERNAME_LENGTH,
     ENTER_BANK_PASSWORD, ERR_BANK_PASSWORD_SHORT,
-    ENTER_BANK_BALANCE, ERR_BALANCE_MIN
+    ENTER_BANK_BALANCE, ERR_BALANCE_MIN,
+    ENTER_ADMIN_USERNAME, ENTER_ADMIN_PASSWORD, ERR_WRONG_CREDENTIALS,
+    REMAINING_ATTEMPTS, ERR_CREDENTIALS_EXHAUSTED, SUCCESS_ADMIN_LOGIN
 )
 
 
@@ -90,3 +92,25 @@ def validate_bank_initial_balance():
         float: The validated initial balance.
     """
     return validate_amount(ENTER_BANK_BALANCE, 1000000, ERR_BALANCE_MIN)
+
+
+def validate_admin_credentials(admin):
+    """Prompt for admin credentials and verify them with up to 3 attempts.
+
+    Args:
+        admin (Admin): The Admin instance to verify against.
+
+    Returns:
+        bool: True if credentials are verified, False after 3 failed attempts.
+    """
+    for attempt in range(3, 0, -1):
+        username = input(ENTER_ADMIN_USERNAME)
+        password = input(ENTER_ADMIN_PASSWORD)
+        if admin.verify_credentials(username, password):
+            print(SUCCESS_ADMIN_LOGIN)
+            return True
+        print(ERR_WRONG_CREDENTIALS)
+        if attempt > 1:
+            print(REMAINING_ATTEMPTS.format(attempt - 1))
+    print(ERR_CREDENTIALS_EXHAUSTED)
+    return False

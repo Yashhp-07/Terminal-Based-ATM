@@ -23,6 +23,14 @@ ERR_BALANCE_MIN = "Initial bank balance must be at least Rs. 10,00,000."
 # Success messages
 SUCCESS_BANK_CREATED = "\nBank created successfully!"
 
+# Admin authentication
+ENTER_ADMIN_USERNAME = "Enter admin username: "
+ENTER_ADMIN_PASSWORD = "Enter admin password: "
+SUCCESS_ADMIN_LOGIN = "Admin login successful."
+ERR_WRONG_CREDENTIALS = "Wrong username or password."
+REMAINING_ATTEMPTS = "Attempts remaining: {}"
+ERR_CREDENTIALS_EXHAUSTED = "Too many failed attempts. Access denied."
+
 # View headers and messages
 HEADER_CREATE_BANK = "\n--- Create Bank ---"
 HEADER_ALL_BANKS = "\n--- All Banks ---"
