@@ -1,6 +1,10 @@
 from utils.generators import generate_user_id, generate_card_number, generate_pin, generate_atm_id
 from Users.users import User
 from Atm.atm import ATM
+from .constants import (
+    HEADER_CREATE_USER, HEADER_CREATE_ATM, HEADER_ACCOUNT_SUCCESS, MSG_ATM_SUCCESS,
+    ERR_INSUFFICIENT_FUNDS
+)
 from .validations import (
     validate_name, validate_dob, validate_phone_number, validate_email,
     validate_aadhar_number, validate_pan_number, validate_initial_balance,
@@ -19,7 +23,7 @@ class Bank:
         self.atms = {}
 
     def create_user_account(self):
-        print("\n--- Create User Account ---")
+        print(HEADER_CREATE_USER)
         name = validate_name()
         dob = validate_dob()
         phone = validate_phone_number()
@@ -35,7 +39,7 @@ class Bank:
         user = User(user_id, name, dob, phone, email, aadhar, pan, initial_balance, self.name, card_number, pin)
         self.users[card_number] = user
 
-        print("\n--- Account Created Successfully ---")
+        print(HEADER_ACCOUNT_SUCCESS)
         print(f"Name: {user.name}")
         print(f"User ID: {user.user_id}")
         print(f"Card Number: {user.card_number}")
@@ -44,7 +48,7 @@ class Bank:
         print(f"Bank: {user.bank_name}")
 
     def create_atm(self):
-        print("\n--- Create ATM ---")
+        print(HEADER_CREATE_ATM)
         atm_id = generate_atm_id(self.name)
         location = validate_location()
 
@@ -52,13 +56,13 @@ class Bank:
             amount = validate_atm_initial_balance()
             if self.balance >= amount:
                 break
-            print("Insufficient bank funds to deploy ATM with this balance.")
+            print(ERR_INSUFFICIENT_FUNDS)
 
         atm = ATM(atm_id, self.name, amount, self, location)
         self.atms[atm_id] = atm
         self.balance -= amount
 
-        print(f"\nATM created successfully!")
+        print(MSG_ATM_SUCCESS)
         print(f"ATM ID: {atm.atm_id}")
         print(f"Location: {atm.location}")
         print(f"Initial Cash: Rs.{atm.balance:.2f}")
