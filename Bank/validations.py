@@ -1,3 +1,9 @@
+"""Validation functions for the Bank module.
+
+Provides interactive input validators for KYC details during user account
+creation and ATM deployment. Each function loops until valid input is provided.
+"""
+
 import re
 from datetime import datetime
 
@@ -16,6 +22,15 @@ from .constants import (
 
 
 def validate_name():
+    """Prompt and validate the user's full name.
+
+    Rules:
+        - Must not be empty.
+        - Must not contain digits.
+
+    Returns:
+        str: The validated name.
+    """
     while True:
         name = input(ENTER_NAME)
         if not name:
@@ -28,6 +43,15 @@ def validate_name():
 
 
 def validate_dob():
+    """Prompt and validate the user's date of birth.
+
+    Rules:
+        - Must be in DD/MM/YYYY format.
+        - Age must be between 16 and 100 years.
+
+    Returns:
+        str: The validated date of birth string.
+    """
     while True:
         dob = input(ENTER_DOB)
         try:
@@ -48,6 +72,15 @@ def validate_dob():
 
 
 def validate_phone_number():
+    """Prompt and validate the user's phone number.
+
+    Rules:
+        - Must contain only digits.
+        - Must be exactly 10 characters long.
+
+    Returns:
+        str: The validated 10-digit phone number.
+    """
     while True:
         phone = input(ENTER_PHONE_NUMBER)
         if not phone.isdigit():
@@ -60,6 +93,15 @@ def validate_phone_number():
 
 
 def validate_email():
+    """Prompt and validate the user's email address.
+
+    Rules:
+        - Must match standard email regex pattern.
+        - Stored in lowercase.
+
+    Returns:
+        str: The validated email address in lowercase.
+    """
     pattern = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
     while True:
         email = input(ENTER_EMAIL)
@@ -70,6 +112,15 @@ def validate_email():
 
 
 def validate_aadhar_number():
+    """Prompt and validate the user's Aadhar number.
+
+    Rules:
+        - Must contain only digits.
+        - Must be exactly 12 characters long.
+
+    Returns:
+        str: The validated 12-digit Aadhar number.
+    """
     while True:
         aadhar = input(ENTER_AADHAR_NUMBER)
         if not aadhar.isdigit():
@@ -82,6 +133,15 @@ def validate_aadhar_number():
 
 
 def validate_pan_number():
+    """Prompt and validate the user's PAN number.
+
+    Rules:
+        - Must match format: 5 uppercase letters, 4 digits, 1 uppercase letter.
+        - Stored in uppercase.
+
+    Returns:
+        str: The validated PAN number in uppercase.
+    """
     pattern = re.compile(r"^[A-Z]{5}[0-9]{4}[A-Z]$")
     while True:
         pan = input(ENTER_PAN_NUMBER)
@@ -92,6 +152,19 @@ def validate_pan_number():
 
 
 def validate_amount(prompt, minimum, error_message):
+    """Generic helper to validate a numeric amount input.
+
+    Loops until the user enters a valid number that meets the minimum
+    requirement.
+
+    Args:
+        prompt (str): The input prompt to display.
+        minimum (float): The minimum acceptable value.
+        error_message (str): Error message shown when value is below minimum.
+
+    Returns:
+        float: The validated amount.
+    """
     while True:
         value = input(prompt)
         try:
@@ -106,18 +179,54 @@ def validate_amount(prompt, minimum, error_message):
 
 
 def validate_initial_balance():
+    """Prompt and validate the initial deposit amount for a new account.
+
+    Rules:
+        - Must be a valid number.
+        - Minimum: Rs. 1,000.
+
+    Returns:
+        float: The validated initial balance.
+    """
     return validate_amount(ENTER_INITIAL_BALANCE, 1000, ERR_BALANCE_MIN)
 
 
 def validate_atm_initial_balance():
+    """Prompt and validate the initial cash balance for a new ATM.
+
+    Rules:
+        - Must be a valid number.
+        - Minimum: Rs. 1,00,000.
+
+    Returns:
+        float: The validated initial ATM balance.
+    """
     return validate_amount(ENTER_ATM_INITIAL_BALANCE, 100000, ERR_ATM_BALANCE_MIN)
 
 
 def validate_atm_topup_balance():
+    """Prompt and validate the top-up amount for an existing ATM.
+
+    Rules:
+        - Must be a valid number.
+        - Minimum: Rs. 50,000.
+
+    Returns:
+        float: The validated top-up amount.
+    """
     return validate_amount(ENTER_AMOUNT_TO_ADD, 50000, ERR_ATM_TOPUP_MIN)
 
 
 def validate_location():
+    """Prompt and validate the ATM location string.
+
+    Rules:
+        - Must be at least 2 characters long.
+        - Must not exceed 60 characters.
+
+    Returns:
+        str: The validated location description.
+    """
     while True:
         location = input(ENTER_LOCATION)
         if len(location) < 2:

@@ -1,3 +1,9 @@
+"""Constants for the Bank module.
+
+This module contains all string constants used throughout the Bank package,
+including KYC input prompts, validation error messages, and display headers.
+"""
+
 # KYC Input Prompts
 ENTER_NAME = "Enter your full name: "
 ENTER_DOB = "Enter your date of birth (DD/MM/YYYY): "
